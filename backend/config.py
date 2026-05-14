@@ -23,5 +23,7 @@ class Config:
     MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10 MB limit
     ALLOWED_EXTENSIONS = {'pdf', 'docx', 'txt'}
 
-    # CORS – comma-separated origins in env var
-    CORS_ORIGINS = os.environ.get('CORS_ORIGINS', 'http://localhost:5173').split(',')
+    # CORS – on Vercel, frontend and backend share the same origin, so allow all.
+    # Set CORS_ORIGINS env var to restrict in production (comma-separated).
+    _default_cors = '*' if _on_vercel else 'http://localhost:5173'
+    CORS_ORIGINS = os.environ.get('CORS_ORIGINS', _default_cors).split(',')
